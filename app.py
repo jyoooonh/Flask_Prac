@@ -91,6 +91,11 @@ def login():
 def logout():
     session.clear()
     return redirect('/')
+
+@app.route('/list')
+@is_logged_in
+def list():
+    return render_template('list.html')
     
 if __name__ == '__main__':
     # print("TEST1")
