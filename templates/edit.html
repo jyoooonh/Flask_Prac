@@ -1,0 +1,53 @@
+{% extends 'layout_list.html' %} {% block content %}
+<body id="page-top">
+	{% include "includes/navbar.html" %} {% block navbar %} {% endblock %}
+	<!-- Masthead-->
+	<header class="masthead bg-primary text-white text-center">
+		<!-- Begin Page Content -->
+		<div class="container">
+			<div class="container-fluid">
+				<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">게시판</h1>
+				<p class="mb-4">
+					DataTables is a third party plugin that is used to generate the demo
+					table below. For more information about DataTables, please visit the
+					<a target="_blank" href="https://datatables.net"
+						>official DataTables documentation</a
+					>.
+				</p>
+
+				<!-- DataTales Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold text-primary">게시판 편집</h6>
+					</div>
+					<div class="card-body">
+						<form action="/edit/{{data._id}}" method="post">
+							title :
+							<input
+								type="text"
+								name="title"
+								placeholder="title"
+								value="{{ data.title }}"
+							/><br />
+							desc :
+							<textarea name="desc" id="" cols="30" rows="10">
+{{ data.desc }}</textarea
+							><br />
+							author :
+							<input
+								type="text"
+								name="author"
+								placeholder="author"
+								value="{{ data.author }}"
+							/><br />
+							<input type="submit" value="편집" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.container-fluid -->
+	</header>
+</body>
+{% endblock %}

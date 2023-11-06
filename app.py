@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, session
 from pymongo import MongoClient
 from passlib.hash import pbkdf2_sha256
 from bson.json_util import dumps
-import json
+import bson
 from functools import wraps
 
 app = Flask(__name__)
@@ -61,6 +61,7 @@ def register():
           })
           return redirect('/login')
     
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -87,6 +88,7 @@ def login():
     elif request.method == "GET":
         return render_template('login.html')
 
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -95,8 +97,71 @@ def logout():
 @app.route('/list')
 # @is_logged_in
 def list():
-    return render_template('list.html')
+    lists = db.lists
+    results = lists.find()
+    # for i in results:
+    #     print(i)
+
+    return render_template('list.html', data = results)
     
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    if request.method == 'GET':
+        return render_template('create.html')
+    else:
+        lists = db.lists
+        title = request.form['title']
+        desc = request.form['desc']
+        author = request.form['author']
+
+        lists.insert_one({
+            'title':title,
+            "desc":desc,
+            "author":author
+        })
+        return redirect('/list')
+
+# ids를 parameter 처리
+@app.route('/detail/<list_id>/', methods=['GET', 'POST'])
+def detail(list_id):
+    lists = db.lists
+    result = lists.find_one({'_id':bson.ObjectId(list_id)})
+    print(result)
+    return render_template('detail.html', data = result)
+
+
+@app.route('/edit/<list_id>', methods=['GET', 'POST'])
+def edit(list_id):
+    if request.method == 'GET':
+        lists = db.lists
+        result = lists.find_one({'_id':bson.ObjectId(list_id)})
+        return render_template('edit.html', data = result)
+    elif request.method == 'POST':
+        lists = db.lists
+        title = request.form['title']
+        desc = request.form['desc']
+        author = request.form['author']
+
+        # mycollection.update({'_id':mongo_id}, {"$set": post}, upsert=False)
+        lists.update_one(
+            {'_id':bson.ObjectId(list_id)},
+            {"$set":{
+                "title":title,
+                "desc":desc,
+                "author":author
+            }},
+            upsert=False)
+        return redirect('/list')
+
+
+# import bson
+# @app.route("/check/<id>")
+# def check(id):
+# doc=conn.db.msg.find_one({'_id':bson.ObjectId(oid=str(id))})
+# return render_template('base.html',name=doc)
+
+
 if __name__ == '__main__':
     # print("TEST1")
     app.run(debug=True , port=8000)

@@ -1,0 +1,35 @@
+{% extends 'layout_list.html' %} {% block content %}
+<body id="page-top">
+	{% include "includes/navbar.html" %} {% block navbar %} {% endblock %}
+	<!-- Masthead-->
+	<header class="masthead bg-primary text-white text-center">
+		<!-- Begin Page Content -->
+		<div class="container">
+			<div class="container-fluid">
+				<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">게시판</h1>
+				<div class="card-body">
+					<!-- DataTales Example -->
+					<!-- Basic Card Example -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">TITLE</h6>
+						</div>
+						<div class="card-body" style="color: black">{{data.title}}</div>
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">내용</h6>
+						</div>
+						<div class="card-body" style="color: black">{{data.desc}}</div>
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">글쓴이</h6>
+						</div>
+						<div class="card-body" style="color: black">{{data.author}}</div>
+					</div>
+					<a href="/create"><button class="btn-primary">Write</button></a>
+				</div>
+			</div>
+		</div>
+		<!-- /.container-fluid -->
+	</header>
+</body>
+{% endblock %}
