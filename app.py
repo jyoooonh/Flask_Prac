@@ -93,7 +93,7 @@ def logout():
     return redirect('/')
 
 @app.route('/list')
-@is_logged_in
+# @is_logged_in
 def list():
     return render_template('list.html')
     
